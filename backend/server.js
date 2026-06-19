@@ -505,7 +505,7 @@ io.on("connection", (socket) => {
     userSessions.set(userId, session)
 
     try {
-      await supabase
+      await supabasez
         .from("users")
         .update({
           xp: session.xp.total,
