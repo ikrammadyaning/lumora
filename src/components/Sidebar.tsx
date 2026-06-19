@@ -31,7 +31,11 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="hidden lg:flex fixed left-0 top-0 h-screen w-[260px] flex-col z-40" style={{ backgroundColor: 'var(--sidebar-bg)' }}>
+      {/* Desktop Sidebar */}
+      <aside
+        className="hidden lg:flex fixed left-0 top-0 h-screen w-[260px] flex-col z-40"
+        style={{ backgroundColor: "var(--sidebar-bg)" }}
+      >
         <div className="px-6 pt-8 pb-6 border-b border-white/10">
           <h1 className="text-2xl font-bold text-white tracking-tight">
             RuangSantri
@@ -46,7 +50,7 @@ export default function Sidebar() {
             <Link
               key={item.label}
               to={item.to}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative ${
+              className={`relative flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive(item.to)
                   ? "bg-emerald-500/15 text-emerald-400"
                   : "text-white/60 hover:text-white hover:bg-white/5"
@@ -54,9 +58,10 @@ export default function Sidebar() {
             >
               <span className="text-lg">{item.icon}</span>
               <span>{item.label}</span>
-              {(item.label === "Side Quest" ? questCount > 0 : item.badge) && (
+
+              {item.label === "Side Quest" && questCount > 0 && (
                 <span className="ml-auto bg-red-500 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">
-                  {item.label === "Side Quest" ? questCount : item.badge}
+                  {questCount}
                 </span>
               )}
             </Link>
@@ -68,6 +73,7 @@ export default function Sidebar() {
             <p className="text-[11px] font-semibold text-emerald-400/80 uppercase tracking-wider mb-1.5">
               💡 Tip Hari Ini
             </p>
+
             <p className="text-white/70 text-xs leading-relaxed italic">
               {randomTip}
             </p>
@@ -75,23 +81,29 @@ export default function Sidebar() {
         </div>
       </aside>
 
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 border-t border-white/10 z-40 px-2 pb-safe" style={{ backgroundColor: 'var(--sidebar-bg)' }}>
+      {/* Mobile Bottom Navigation */}
+      <nav
+        className="lg:hidden fixed bottom-0 left-0 right-0 border-t border-white/10 z-40 px-2 pb-safe"
+        style={{ backgroundColor: "var(--sidebar-bg)" }}
+      >
         <div className="flex items-center justify-around py-2">
           {menuItems.slice(0, 5).map((item) => (
             <Link
               key={item.label}
               to={item.to}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-[10px] font-medium transition-colors relative ${
+              className={`relative flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl text-[10px] font-medium transition-colors ${
                 isActive(item.to)
                   ? "text-emerald-400"
                   : "text-white/50 hover:text-white/80"
               }`}
             >
               <span className="text-lg">{item.icon}</span>
+
               <span className="text-[10px]">{item.label}</span>
-              {(item.label === "Side Quest" ? questCount > 0 : item.badge) && (
+
+              {item.label === "Side Quest" && questCount > 0 && (
                 <span className="absolute -top-0.5 right-1 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
-                  {item.label === "Side Quest" ? questCount : item.badge}
+                  {questCount}
                 </span>
               )}
             </Link>

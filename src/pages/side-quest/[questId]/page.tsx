@@ -45,34 +45,46 @@ export default function QuestDetailPage() {
   const [alreadyDone, setAlreadyDone] = useState(false)
 
   useEffect(() => {
-    if (!questId) return
-    setLoading(true)
-    supabase
-      .from("quests")
-      .select("*")
-      .eq("id", questId)
-      .single()
-      .then(({ data, error: err }) => {
-        if (err || !data) {
-          setQuest(null)
-        } else {
-          setQuest(data as Quest)
-        }
-      })
-      .finally(() => setLoading(false))
+  if (!questId) return
 
-    if (user) {
-      supabase
-        .from("quest_submissions")
-        .select("id")
-        .eq("user_id", user.id)
-        .eq("quest_id", questId)
-        .maybeSingle()
-        .then(({ data }) => {
-          if (data) setAlreadyDone(true)
-        })
+  const loadQuest = async () => {
+    setLoading(true)
+
+    try {
+      // Ambil data quest
+      const { data, error } = await supabase
+        .from("quests")
+        .select("*")
+        .eq("id", questId)
+        .single()
+
+      if (error || !data) {
+        setQuest(null)
+      } else {
+        setQuest(data as Quest)
+      }
+
+      // Cek apakah user sudah pernah mengerjakan
+      if (user) {
+        const { data: submission } = await supabase
+          .from("quest_submissions")
+          .select("id")
+          .eq("user_id", user.id)
+          .eq("quest_id", questId)
+          .maybeSingle()
+
+        setAlreadyDone(!!submission)
+      }
+    } catch (err) {
+      console.error(err)
+      setQuest(null)
+    } finally {
+      setLoading(false)
     }
-  }, [questId, user])
+  }
+
+  loadQuest()
+}, [questId, user])
 
   const handleSubmit = useCallback(async () => {
     if (!quest || !user || submitting) return
