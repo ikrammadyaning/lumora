@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint",
-    "start": "vite --port $PORT --host"
+    "start": "serve -s dist -l tcp://0.0.0.0:$PORT"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.108.2",
@@ -17,6 +17,7 @@
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^6.30.0",
+    "serve": "^14.2.6",
     "socket.io-client": "^4.8.3"
   },
   "devDependencies": {
